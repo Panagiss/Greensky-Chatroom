@@ -16,13 +16,29 @@ public class Client {
         MessageReceiver messageReceiver=new MessageReceiver(socket);
 
         BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in) );
-        PrintWriter out =new PrintWriter(socket.getOutputStream(),true);
+        PrintWriter toServer =new PrintWriter(socket.getOutputStream(),true);
 
-        new Thread(messageReceiver).start();
+        Thread t = new Thread(messageReceiver);
+        t.start();
 
-        while(true){
-            String write =keyboard.readLine();
-            out.println(write);
+        try {
+            while (true) {
+                String msg = keyboard.readLine();
+                toServer.println(msg);
+                if (msg.contains("exit")) {
+                    System.out.println("Exiting...");
+                    break;
+                }
+            }
+        }finally {
+            keyboard.close();
+            while(true){
+                if(!t.isAlive()){
+                    toServer.close();
+                    socket.close();
+                    break;
+                }
+            }
         }
     }
 }

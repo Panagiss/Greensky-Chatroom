@@ -8,32 +8,37 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class ClientHandler implements Runnable{
-    private Socket socket;
-    private BufferedReader in;
-    private PrintWriter out;
-    private ArrayList<ClientHandler> clientList;
+    private Socket clientSocket;
+    private BufferedReader fromClient;
+    private PrintWriter toClient;
+    private final ArrayList<ClientHandler> clientList;
 
     public ClientHandler(Socket clientSocket,ArrayList<ClientHandler> clients) throws IOException {
-        this.socket = clientSocket;
+        this.clientSocket = clientSocket;
         this.clientList = clients;
-        in=new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        out=new PrintWriter(socket.getOutputStream(),true);
+        fromClient =new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
+        toClient =new PrintWriter(this.clientSocket.getOutputStream(),true);
     }
 
     @Override
     public void run() {
         try {
             while (true){
-                String res=in.readLine();
-                System.out.println(res);
-                clientList.forEach(clientHandler -> clientHandler.out.println("Server received message"));
+                String res= fromClient.readLine();
+                if(res.contains("exit")){
+                    toClient.println("exit");
+                    System.out.println("Client left");
+                    break;
+                }
+                System.out.println("Client message: "+res);
+                clientList.forEach(clientHandler -> clientHandler.toClient.println("Message "+res+" received"));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
-            out.close();
+            toClient.close();
             try {
-                in.close();
+                fromClient.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -41,27 +46,27 @@ public class ClientHandler implements Runnable{
     }
 
 
-    public Socket getSocket() {
-        return socket;
+    public Socket getClientSocket() {
+        return clientSocket;
     }
 
-    public void setSocket(Socket socket) {
-        this.socket = socket;
+    public void setClientSocket(Socket clientSocket) {
+        this.clientSocket = clientSocket;
     }
 
-    public BufferedReader getIn() {
-        return in;
+    public BufferedReader getFromClient() {
+        return fromClient;
     }
 
-    public void setIn(BufferedReader in) {
-        this.in = in;
+    public void setFromClient(BufferedReader fromClient) {
+        this.fromClient = fromClient;
     }
 
-    public PrintWriter getOut() {
-        return out;
+    public PrintWriter getToClient() {
+        return toClient;
     }
 
-    public void setOut(PrintWriter out) {
-        this.out = out;
+    public void setToClient(PrintWriter toClient) {
+        this.toClient = toClient;
     }
 }

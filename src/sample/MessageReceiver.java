@@ -6,12 +6,10 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class MessageReceiver implements Runnable {
-    private Socket socket;
-    private BufferedReader in;
+    private final BufferedReader fromServer;
 
     public MessageReceiver(Socket socket) throws IOException {
-        this.socket = socket;
-        in=new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        fromServer =new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
 
     @Override
@@ -20,14 +18,15 @@ public class MessageReceiver implements Runnable {
         String res= null;
         try {
             while (true){
-                res = in.readLine();
+                res = fromServer.readLine();
+                if(res.contains("exit")) break;
                 System.out.println("Server says: "+res);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
             try {
-                in.close();
+                fromServer.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -9,15 +9,15 @@ import java.util.concurrent.Executors;
 
 public class Server {
     private static final int PORT =1313;
-    private static ArrayList<ClientHandler> clientList =new ArrayList<>();
-    private static ExecutorService pool = Executors.newFixedThreadPool(4);
+    private static final ArrayList<ClientHandler> clientList =new ArrayList<>();
+    private static final ExecutorService pool = Executors.newFixedThreadPool(4);
 
     public static void main(String [] args) throws IOException {
         ServerSocket listener = new ServerSocket(PORT);
-        System.out.println("Server up and running");
+        System.out.println("Server up and running\n\n");
         while(true){
             Socket clientSoc = listener.accept();
-            System.out.println("User connected");
+            System.out.println("User connected\n");
 
             ClientHandler clientThread = new ClientHandler(clientSoc, clientList);
             clientList.add(clientThread);
