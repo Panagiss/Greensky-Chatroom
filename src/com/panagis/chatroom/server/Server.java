@@ -1,4 +1,6 @@
-package sample;
+package com.panagis.chatroom.server;
+
+import com.panagis.chatroom.server.ClientHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;

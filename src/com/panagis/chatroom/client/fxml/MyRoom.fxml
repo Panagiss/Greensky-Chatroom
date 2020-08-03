@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="785.0" style="-fx-background-color: #79a6a4;" stylesheets="@../style/MyRoom.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.panagis.chatroom.client.controller.RoomController">
+   <top>
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #316e6c;" text="GREEN SKY CHAT ROOM" textFill="#13ae44" BorderPane.alignment="TOP_LEFT">
+         <font>
+            <Font name="FreeSans Bold" size="13.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </Label>
+   </top>
+   <bottom>
+      <HBox alignment="BOTTOM_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="676.0">
+         <children>
+            <JFXTextArea fx:id="textToSend" maxWidth="1.7976931348623157E308" opacity="0.6" prefHeight="50.0" prefWidth="450.0" promptText="Say Something..." style="-fx-border-color: pink; -fx-background-color: #bed477;">
+               <font>
+                  <Font name="Gargi" size="14.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </JFXTextArea>
+            <JFXButton fx:id="btnSend" onAction="#send" prefHeight="84.0" prefWidth="120.0" style="-fx-background-color: orange;" text="SEND" textAlignment="CENTER" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <BorderPane.margin>
+            <Insets left="227.0" />
+         </BorderPane.margin>
+      </HBox>
+   </bottom>
+   <left>
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" opacity="0.5" prefHeight="374.0" prefWidth="227.0" style="-fx-background-color: red;" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="TOP_CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="162.0" style="-fx-background-color: purple;" text="Online Boys" textAlignment="CENTER" textFill="#9e9fda">
+               <font>
+                  <Font name="Courier New Bold Italic" size="18.0" />
+               </font>
+            </Label>
+            <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" opacity="0.45" prefHeight="320.0" prefWidth="162.0" style="-fx-background-color: red; -fx-fit-to-height: true; -fx-fit-to-width: true;">
+               <content>
+                  <VBox fx:id="usersVbox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="315.0" prefWidth="224.0" />
+               </content>
+            </ScrollPane>
+         </children>
+         <BorderPane.margin>
+            <Insets top="30.0" />
+         </BorderPane.margin>
+      </VBox>
+   </left>
+   <center>
+      <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #79a6a4; -fx-fit-to-height: true; -fx-fit-to-width: true;" BorderPane.alignment="CENTER">
+         <content>
+            <VBox fx:id="messagesVbox" prefHeight="385.0" prefWidth="465.0" spacing="20.0" style="-fx-background-color: transparent; -fx-border-color: transparent;">
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="30.0" />
+               </padding></VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

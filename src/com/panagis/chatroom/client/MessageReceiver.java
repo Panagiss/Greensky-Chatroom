@@ -1,4 +1,4 @@
-package sample;
+package com.panagis.chatroom.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
