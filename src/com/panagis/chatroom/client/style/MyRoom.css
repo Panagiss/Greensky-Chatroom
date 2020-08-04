@@ -1,3 +1,19 @@
 .scroll-pane > .viewport {
     -fx-background-color: transparent;
 }
+
+.myMsg {
+    -fx-background-color: #052afa;
+    -fx-alignment : baseline-right;
+    -fx-text-fill: gold;
+    -fx-background-radius: 30px;
+    -fx-background-size: auto;
+}
+
+.clientMsg{
+    -fx-background-color: #ed1c1c;
+    -fx-alignment : baseline-left;
+    -fx-text-fill: gold;
+    -fx-background-radius: 30px;
+    -fx-background-size: auto;
+}

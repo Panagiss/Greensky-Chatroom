@@ -1,4 +1,4 @@
-package com.panagis.chatroom.client;
+package com.panagis.chatroom.client.main;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -7,11 +7,12 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class MainClient extends Application {
+
+    public static final String SERVER_IP="127.0.0.1";
+    public static final int SERVER_PORT=1313;
 
     /**
      * This is the main method. Everything starts from here.

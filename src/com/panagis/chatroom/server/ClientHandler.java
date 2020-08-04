@@ -31,7 +31,11 @@ public class ClientHandler implements Runnable{
                     break;
                 }
                 System.out.println("Client message: "+res);
-                clientList.forEach(clientHandler -> clientHandler.toClient.println("Message "+res+" received"));
+                clientList.forEach(clientHandler -> {
+                    if(clientHandler.clientSocket!=this.clientSocket) {
+                        clientHandler.toClient.println("A client said: " + res);
+                    }
+                });
             }
         } catch (IOException e) {
             e.printStackTrace();

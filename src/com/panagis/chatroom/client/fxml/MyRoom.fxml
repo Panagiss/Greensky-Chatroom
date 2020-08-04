@@ -64,7 +64,7 @@
    <center>
       <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #79a6a4; -fx-fit-to-height: true; -fx-fit-to-width: true;" BorderPane.alignment="CENTER">
          <content>
-            <VBox fx:id="messagesVbox" prefHeight="385.0" prefWidth="465.0" spacing="20.0" style="-fx-background-color: transparent; -fx-border-color: transparent;">
+            <VBox fx:id="messagesVbox" spacing="20.0" style="-fx-background-color: transparent; -fx-border-color: transparent;">
                <padding>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="30.0" />
                </padding></VBox>

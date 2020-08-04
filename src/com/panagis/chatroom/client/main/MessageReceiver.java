@@ -1,4 +1,4 @@
-package com.panagis.chatroom.client;
+package com.panagis.chatroom.client.main;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class MessageReceiver implements Runnable {
             while (true){
                 res = fromServer.readLine();
                 if(res.contains("exit")) break;
-                System.out.println("Server says: "+res);
+                System.out.println(res);
             }
         } catch (IOException e) {
             e.printStackTrace();

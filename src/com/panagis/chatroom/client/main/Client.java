@@ -1,4 +1,4 @@
-package com.panagis.chatroom.client;
+package com.panagis.chatroom.client.main;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class Client {
         t.start();
 
         try {
-            while (true) {
+            while (true) { //ayto prepei na bei sth send() toy RoomController
                 String msg = keyboard.readLine();
                 toServer.println(msg);
                 if (msg.contains("exit")) {
