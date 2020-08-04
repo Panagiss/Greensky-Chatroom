@@ -12,12 +12,14 @@ public class ClientHandler implements Runnable{
     private BufferedReader fromClient;
     private PrintWriter toClient;
     private final ArrayList<ClientHandler> clientList;
+    private final String username;
 
-    public ClientHandler(Socket clientSocket,ArrayList<ClientHandler> clients) throws IOException {
+    public ClientHandler(Socket clientSocket,ArrayList<ClientHandler> clients, String name) throws IOException {
         this.clientSocket = clientSocket;
         this.clientList = clients;
         fromClient =new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
         toClient =new PrintWriter(this.clientSocket.getOutputStream(),true);
+        username=name;
     }
 
     @Override
@@ -30,10 +32,10 @@ public class ClientHandler implements Runnable{
                     System.out.println("Client left");
                     break;
                 }
-                System.out.println("Client message: "+res);
+                System.out.println("Client (" +username+ ") said: "+res);
                 clientList.forEach(clientHandler -> {
                     if(clientHandler.clientSocket!=this.clientSocket) {
-                        clientHandler.toClient.println("A client said: " + res);
+                        clientHandler.toClient.println(username+" said: " + res);
                     }
                 });
             }

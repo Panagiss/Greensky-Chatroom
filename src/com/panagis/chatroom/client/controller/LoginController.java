@@ -50,10 +50,13 @@ public class LoginController {
         //connect to DB
         //must validate user
 
-        Parent Menu= FXMLLoader.load(getClass().getResource("/com/panagis/chatroom/client/fxml/MyRoom.fxml"));
+        FXMLLoader loader =new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/MyRoom.fxml"));
         Stage window = (Stage) loginBtn.getScene().getWindow();
-        window.getScene().setRoot(Menu);
+        window.getScene().setRoot(loader.load());
         window.show();
+
+        RoomController controller = loader.getController();
+        controller.initialize(username.getText());
     }
 
 }

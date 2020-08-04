@@ -42,8 +42,9 @@ public class RoomController {
         fromServer =new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
 
-    public void initialize() throws IOException {
+    public void initialize(String name) throws IOException {
 
+        toServer.println(name); //send username to server
         Service<Void> thread = new Service<>() {
             @Override
             protected Task<Void> createTask() {
@@ -55,8 +56,8 @@ public class RoomController {
                             while (true){
                                 res = fromServer.readLine();
                                 if(res.contains("exit")) break;
-                                System.out.println("Server says: "+res);
-                                String finalRes = res;
+                                System.out.println(res);
+                                String finalRes = res; //copying res to an effectively final res variable String
                                 Platform.runLater(() -> {
                                     JFXTextField msg =new JFXTextField(finalRes);
                                     msg.getStyleClass().add("clientMsg");

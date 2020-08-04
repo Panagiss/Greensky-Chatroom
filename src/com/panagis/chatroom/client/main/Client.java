@@ -18,6 +18,10 @@ public class Client {
         BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in) );
         PrintWriter toServer =new PrintWriter(socket.getOutputStream(),true);
 
+        //send username
+        String username=keyboard.readLine();
+        toServer.println(username);
+
         Thread t = new Thread(messageReceiver);
         t.start();
 
