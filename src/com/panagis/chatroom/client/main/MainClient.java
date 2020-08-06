@@ -1,5 +1,6 @@
 package com.panagis.chatroom.client.main;
 
+import com.panagis.chatroom.db.DBService;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
@@ -8,6 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.sql.SQLException;
 
 public class MainClient extends Application {
 

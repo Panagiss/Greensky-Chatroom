@@ -39,7 +39,7 @@
                   <Insets bottom="15.0" />
                </VBox.margin>
             </JFXButton>
-            <JFXButton fx:id="signUpBtn" prefHeight="29.0" prefWidth="69.0" style="-fx-background-color: orange;" text="Sign Up" textAlignment="CENTER">
+            <JFXButton fx:id="signUpBtn" onAction="#signUp" prefHeight="29.0" prefWidth="69.0" style="-fx-background-color: orange;" text="Sign Up" textAlignment="CENTER">
                <font>
                   <Font name="System Bold Italic" size="10.0" />
                </font>

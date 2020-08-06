@@ -3,19 +3,20 @@ package com.panagis.chatroom.client.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
-import com.panagis.chatroom.client.main.MessageReceiver;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import static com.panagis.chatroom.client.main.MainClient.SERVER_IP;
 import static com.panagis.chatroom.client.main.MainClient.SERVER_PORT;
@@ -45,25 +46,64 @@ public class RoomController {
     public void initialize(String name) throws IOException {
 
         toServer.println(name); //send username to server
-        Service<Void> thread = new Service<>() {
+        Service<Void> chatThread = new Service<>() {
             @Override
             protected Task<Void> createTask() {
                 return new Task<>() {
                     @Override
                     protected Void call() throws Exception {
+                        JSONObject json = new JSONObject();
+                        JSONParser jsonParser = new JSONParser();
+                        ArrayList<String> list;
                         String res= null;
                         try {
                             while (true){
                                 res = fromServer.readLine();
-                                if(res.contains("exit")) break;
-                                System.out.println(res);
-                                String finalRes = res; //copying res to an effectively final res variable String
-                                Platform.runLater(() -> {
-                                    JFXTextField msg =new JFXTextField(finalRes);
-                                    msg.getStyleClass().add("clientMsg");
-                                    //messagesVbox.setAlignment(Pos.TOP_RIGHT);
-                                    messagesVbox.getChildren().add(msg);
-                                });
+                                json= (JSONObject) jsonParser.parse(res);
+                                if(json.containsKey("exit")) break;
+                                if(json.containsKey("message")) {
+                                    System.out.println(json.get("name") + " said: " + json.get("message"));
+                                    String finalRes = json.get("name") + " said: " + json.get("message"); //copying res to an effectively final res variable String
+                                    Platform.runLater(() -> {
+                                        JFXTextField msg = new JFXTextField(finalRes);
+                                        msg.getStyleClass().add("clientMsg");
+                                        //messagesVbox.setAlignment(Pos.TOP_RIGHT);
+                                        messagesVbox.getChildren().add(msg);
+                                    });
+                                }else if(json.containsKey("addUser")){
+                                    list= (ArrayList<String>) json.get("addUser");
+                                    System.out.println("New addition: "+list);
+                                    ArrayList<String> finalList = list;
+                                    Platform.runLater(() -> {
+                                        usersVbox.getChildren().clear();
+                                        finalList.forEach(s -> {
+                                            if(!s.equals(name) ) {
+                                                JFXTextField textField = new JFXTextField(s);
+                                                textField.getStyleClass().add("onlineUsers");
+                                                textField.setEditable(false);
+                                                usersVbox.getChildren().add(textField);
+                                            }
+                                        });
+
+                                    });
+                                }else if(json.containsKey("removeUser")) {
+                                    list= (ArrayList<String>) json.get("removeUser");
+                                    System.out.println(json.get("name")+" has left the chat");
+                                    System.out.println("New list: "+list);
+                                    ArrayList<String> finalList = list;
+                                    Platform.runLater(() -> {
+                                        usersVbox.getChildren().clear();
+                                        finalList.forEach(s -> {
+                                            if(!s.equals(name) ) {
+                                                JFXTextField textField = new JFXTextField(s);
+                                                textField.getStyleClass().add("onlineUsers");
+                                                textField.setEditable(false);
+                                                usersVbox.getChildren().add(textField);
+                                            }
+                                        });
+
+                                    });
+                                }
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -80,10 +120,23 @@ public class RoomController {
             }
         };
 
-        thread.setOnSucceeded(workerStateEvent -> System.out.println("Thread Succeed"));
-        thread.setOnFailed(workerStateEvent -> System.out.println("Thread Failed"));
+        Service<Void> onlineUsersThread = new Service<Void>() {
+            @Override
+            protected Task<Void> createTask() {
+                return new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
 
-        thread.start();
+                        return null;
+                    }
+                };
+            }
+        };
+
+        chatThread.setOnSucceeded(workerStateEvent -> System.out.println("Chat Thread Succeed"));
+        chatThread.setOnFailed(workerStateEvent -> System.out.println("Chat Thread Failed"));
+
+        chatThread.start();
     }
 
     public void send(){

@@ -4,13 +4,15 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
+import com.panagis.chatroom.db.DBService;
 import javafx.beans.binding.Bindings;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class LoginController {
 
@@ -25,7 +27,16 @@ public class LoginController {
     @FXML
     public JFXButton closeBtn = new JFXButton();
 
-    public LoginController(){}
+    public LoginController(){
+        //connect to DB
+        try {
+            DBService.makeDBConnection();
+        }catch (SQLException | ClassNotFoundException e){
+            System.out.println("DB connection error");
+            e.printStackTrace();
+            //must print error to users
+        }
+    }
     public void initialize(){
         RequiredFieldValidator validator =new RequiredFieldValidator();
         validator.setMessage("Input Required");
@@ -46,9 +57,12 @@ public class LoginController {
 
     }
 
-    public void login() throws IOException {
-        //connect to DB
+    public void login() throws IOException{
         //must validate user
+        if(!DBService.getDataFromDB(username.getText(),password.getText())){
+            System.out.println("User not found");
+            return; //must print error to users
+        }
 
         FXMLLoader loader =new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/MyRoom.fxml"));
         Stage window = (Stage) loginBtn.getScene().getWindow();
@@ -59,4 +73,18 @@ public class LoginController {
         controller.initialize(username.getText());
     }
 
+    public void signUp(ActionEvent actionEvent) throws IOException {
+        if(!DBService.insertDataToDB(username.getText(),password.getText())){
+            System.out.println("Error occurred, maybe users exists");
+            return; //must print error to users
+        }
+
+        FXMLLoader loader =new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/MyRoom.fxml"));
+        Stage window = (Stage) loginBtn.getScene().getWindow();
+        window.getScene().setRoot(loader.load());
+        window.show();
+
+        RoomController controller = loader.getController();
+        controller.initialize(username.getText());
+    }
 }

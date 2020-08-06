@@ -17,3 +17,11 @@
     -fx-background-radius: 30px;
     -fx-background-size: auto;
 }
+.onlineUsers{
+    -fx-background-color: #11540b;
+    -fx-alignment : baseline-center;
+    -fx-text-fill: white;
+    -fx-background-radius: 30px;
+    -fx-font-size: 20;
+    -fx-font-style: bold;
+}
