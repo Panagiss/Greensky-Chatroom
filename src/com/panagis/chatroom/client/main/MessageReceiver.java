@@ -27,10 +27,13 @@ public class MessageReceiver implements Runnable {
         try {
             while (true){
                 res = fromServer.readLine();
+                System.out.println("DEBUG"+res);
                 json= (JSONObject) jsonParser.parse(res);
+                System.out.println("DEBUG2"+json);
                 if(json.containsKey("exit")) break;
                 if(json.containsKey("message")) System.out.println(json.get("name")+" said: "+json.get("message"));
                 if(json.containsKey("addUser")) {
+                    System.out.println("DEBUG3");
                     list= (ArrayList<String>) json.get("addUser");
                     System.out.println("New addition: "+list);
                 }

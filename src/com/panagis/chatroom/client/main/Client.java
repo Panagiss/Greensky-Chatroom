@@ -21,9 +21,10 @@ public class Client {
         Thread t = new Thread(messageReceiver);
         t.start();
 
-        //send username
-        String username=keyboard.readLine();
-        toServer.println(username);
+        //int c= keyboard.read();
+        toServer.println("1");
+        toServer.println("Panagis");
+        toServer.println("12345");
 
 
 

@@ -22,10 +22,7 @@ import static com.panagis.chatroom.client.main.MainClient.SERVER_IP;
 import static com.panagis.chatroom.client.main.MainClient.SERVER_PORT;
 
 public class RoomController {
-    private final Socket socket;
-    private final BufferedReader fromKeyboard;
-    private final PrintWriter toServer;
-    private final BufferedReader fromServer;
+    private PrintWriter toServer;
 
     @FXML
     public VBox messagesVbox;
@@ -36,16 +33,12 @@ public class RoomController {
     @FXML
     public JFXButton btnSend;
 
-    public RoomController() throws IOException {
-        socket = new Socket(SERVER_IP,SERVER_PORT);
-        fromKeyboard = new BufferedReader(new InputStreamReader(System.in) );
-        toServer =new PrintWriter(socket.getOutputStream(),true);
-        fromServer =new BufferedReader(new InputStreamReader(socket.getInputStream()));
-    }
+    public RoomController() {}
 
-    public void initialize(String name) throws IOException {
+    public void initialize(String name,PrintWriter toServer,BufferedReader fromServer) {
+        this.toServer =toServer;
 
-        toServer.println(name); //send username to server
+        //toServer.println(name); //send username to server
         Service<Void> chatThread = new Service<>() {
             @Override
             protected Task<Void> createTask() {
@@ -55,10 +48,13 @@ public class RoomController {
                         JSONObject json = new JSONObject();
                         JSONParser jsonParser = new JSONParser();
                         ArrayList<String> list;
-                        String res= null;
+                        String res = new String();
+                        System.out.println("DEBUG LOL");
                         try {
                             while (true){
+                                System.out.println("DEBUG LOL 2");
                                 res = fromServer.readLine();
+                                System.out.println("DEBUG "+res);
                                 json= (JSONObject) jsonParser.parse(res);
                                 if(json.containsKey("exit")) break;
                                 if(json.containsKey("message")) {
@@ -107,11 +103,13 @@ public class RoomController {
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
+                            throw e;
                         }finally {
                             try {
                                 fromServer.close();
                             } catch (IOException e) {
                                 e.printStackTrace();
+                                throw e;
                             }
                         }
                         return null;
@@ -120,27 +118,22 @@ public class RoomController {
             }
         };
 
-        Service<Void> onlineUsersThread = new Service<Void>() {
-            @Override
-            protected Task<Void> createTask() {
-                return new Task<Void>() {
-                    @Override
-                    protected Void call() throws Exception {
 
-                        return null;
-                    }
-                };
-            }
-        };
-
-        chatThread.setOnSucceeded(workerStateEvent -> System.out.println("Chat Thread Succeed"));
-        chatThread.setOnFailed(workerStateEvent -> System.out.println("Chat Thread Failed"));
+        chatThread.setOnSucceeded(workerStateEvent -> {
+            System.out.println("Chat Thread Succeed");
+            System.out.println(chatThread.getValue());
+        });
+        chatThread.setOnFailed(workerStateEvent -> {
+            System.out.println("Chat Thread Failed");
+            chatThread.getException().printStackTrace(System.out);
+        });
 
         chatThread.start();
     }
 
     public void send(){
         //send message to server
+        System.out.println("DEBUG "+textToSend.getText());
         toServer.println(textToSend.getText());
 
         JFXTextField msg =new JFXTextField("Me: "+textToSend.getText());

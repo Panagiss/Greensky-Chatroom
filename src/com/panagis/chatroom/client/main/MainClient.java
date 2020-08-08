@@ -52,10 +52,8 @@ public class MainClient extends Application {
             System.out.println("LOL");
             return;
         }
-        //window.initStyle(StageStyle.TRANSPARENT);
         window.setTitle("GREEN SKY");
         Scene loginScene=new Scene(root);
-        //loginScene.setFill(Color.TRANSPARENT);
         window.setScene(loginScene);
         window.setMaximized(true);
         window.show();
