@@ -16,21 +16,19 @@ public class ClientHandler implements Runnable{
     private BufferedReader fromClient;
     private PrintWriter toClient;
     private final ArrayList<ClientHandler> clientList;
-    private final String username;
 
-    public ClientHandler(Socket clientSocket,ArrayList<ClientHandler> clients, String name) throws IOException {
+    public ClientHandler(Socket clientSocket,ArrayList<ClientHandler> clients) throws IOException {
         this.clientSocket = clientSocket;
         this.clientList = clients;
         fromClient =new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
         toClient =new PrintWriter(this.clientSocket.getOutputStream(),true);
-        username=name;
     }
 
     @Override
     public void run() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        JSONObject json = new JSONObject();
 
-        /*
         //client validation
         String choice= null;
         String username ;
@@ -73,13 +71,19 @@ public class ClientHandler implements Runnable{
         System.out.println("\n"+username+" connected -- "+formatter.format(new Date())+"\n");
         Server.list.add(username);
 
+        json.put("addUser",Server.list);
+        System.out.println("DEBUG "+json);
+        System.out.println("DEBUG 2 "+json.toJSONString());
+        clientList.forEach(clientHandler -> {
+            clientHandler.getToClient().println(json.toJSONString());
+        });
+        System.out.println("DEBUG 3 New user message sent");
 
-         */
 
         //chatting
         try {
             while (true){
-                JSONObject json = new JSONObject();
+                JSONObject json2 = new JSONObject();
                 String res= fromClient.readLine();
                 System.out.println("DEBUG "+res);
                 if(res.contains("exit")){
@@ -94,7 +98,7 @@ public class ClientHandler implements Runnable{
                     json.put("removeUser", Server.list);
                     clientList.forEach(clientHandler -> {
                         if(clientHandler.getClientSocket()!=this.clientSocket){
-                            clientHandler.getToClient().println(json.toJSONString());
+                            clientHandler.getToClient().println(json2.toJSONString());
                         }
                     });
                     break;
@@ -104,7 +108,7 @@ public class ClientHandler implements Runnable{
                 json.put("message",res);
                 clientList.forEach(clientHandler -> {
                     if(clientHandler.clientSocket!=this.clientSocket) {
-                        clientHandler.toClient.println(json.toJSONString());
+                        clientHandler.toClient.println(json2.toJSONString());
                     }
                 });
             }
@@ -145,7 +149,4 @@ public class ClientHandler implements Runnable{
         this.toClient = toClient;
     }
 
-    public String getUsername() {
-        return username;
-    }
 }

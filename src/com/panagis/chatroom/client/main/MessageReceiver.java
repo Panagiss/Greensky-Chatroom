@@ -25,9 +25,10 @@ public class MessageReceiver implements Runnable {
         ArrayList<String> list;
         String res= null;
         try {
+            fromServer.readLine(); //this is the result of sign in. i have to use it later
             while (true){
                 res = fromServer.readLine();
-                System.out.println("DEBUG"+res);
+                System.out.println("DEBUG "+res);
                 json= (JSONObject) jsonParser.parse(res);
                 System.out.println("DEBUG2"+json);
                 if(json.containsKey("exit")) break;
