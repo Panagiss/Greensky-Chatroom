@@ -12,7 +12,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="785.0" style="-fx-background-color: #79a6a4;" stylesheets="@../style/MyRoom.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.panagis.chatroom.client.controller.RoomController">
    <top>
-      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #316e6c;" text="GREEN SKY CHAT ROOM" textFill="#13ae44" BorderPane.alignment="TOP_LEFT">
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #316e6c;" text="GREEN-SKY CHAT ROOM" textFill="#13ae44" BorderPane.alignment="TOP_LEFT">
          <font>
             <Font name="FreeSans Bold" size="13.0" />
          </font>
@@ -32,7 +32,10 @@
                   <Insets />
                </opaqueInsets>
             </JFXTextArea>
-            <JFXButton fx:id="btnSend" onAction="#send" prefHeight="84.0" prefWidth="120.0" style="-fx-background-color: orange;" text="SEND" textAlignment="CENTER" />
+            <JFXButton fx:id="btnSend" onAction="#send" prefHeight="84.0" prefWidth="120.0" style="-fx-background-color: orange;" text="SEND" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></JFXButton>
          </children>
          <opaqueInsets>
             <Insets />
@@ -71,4 +74,11 @@
          </content>
       </ScrollPane>
    </center>
+   <right>
+      <JFXButton fx:id="logoutBtn" alignment="TOP_RIGHT" contentDisplay="TOP" onAction="#logout" style="-fx-background-color: red;" text="Logout" textAlignment="CENTER" BorderPane.alignment="TOP_RIGHT">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </JFXButton>
+   </right>
 </BorderPane>

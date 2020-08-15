@@ -28,19 +28,18 @@ public class MessageReceiver implements Runnable {
             fromServer.readLine(); //this is the result of sign in. i have to use it later
             while (true){
                 res = fromServer.readLine();
-                System.out.println("DEBUG "+res);
+                //System.out.println("DEBUG "+res);
                 json= (JSONObject) jsonParser.parse(res);
-                System.out.println("DEBUG2"+json);
+                System.out.println("\nDEBUG"+json);
                 if(json.containsKey("exit")) break;
                 if(json.containsKey("message")) System.out.println(json.get("name")+" said: "+json.get("message"));
                 if(json.containsKey("addUser")) {
-                    System.out.println("DEBUG3");
                     list= (ArrayList<String>) json.get("addUser");
-                    System.out.println("New addition: "+list);
+                    System.out.println("\nNew addition: "+list+"\n");
                 }
                 if(json.containsKey("removeUser")) {
                     list= (ArrayList<String>) json.get("removeUser");
-                    System.out.println(json.get("name")+" has left the chat");
+                    System.out.println("\n"+json.get("name")+" has left the chat");
                     System.out.println("New list: "+list);
                 }
             }

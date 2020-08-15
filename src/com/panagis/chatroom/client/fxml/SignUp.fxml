@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #35574d;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.panagis.chatroom.client.controller.SignUpController">
+    <top>
+        <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #2A363F;" text="GREEN SKY" textAlignment="CENTER" textFill="#1ca12b" BorderPane.alignment="CENTER">
+            <font>
+                <Font name="Noto Mono" size="18.0" />
+            </font>
+        </Label>
+    </top>
+   <center>
+        <VBox alignment="TOP_CENTER" spacing="15.0" BorderPane.alignment="CENTER">
+            <children>
+                <Text fill="#8ff120" strokeType="OUTSIDE" strokeWidth="0.0" text="SIGN UP" textAlignment="CENTER" wrappingWidth="249.65771484375">
+                    <font>
+                        <Font name="P052-Bold" size="33.0" />
+                    </font>
+               <VBox.margin>
+                  <Insets bottom="50.0" />
+               </VBox.margin>
+                </Text>
+            <JFXTextField fx:id="username" alignment="CENTER" promptText="Username" style="-fx-prompt-text-fill: #8ff120;" unFocusColor="#b16a6a">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="100.0" right="100.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <JFXPasswordField fx:id="password" alignment="CENTER" prefHeight="62.0" prefWidth="331.0" promptText="Password" style="-fx-prompt-text-fill: #8ff120;" unFocusColor="#b16a6a">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="100.0" right="100.0" />
+               </VBox.margin>
+            </JFXPasswordField>
+            <JFXTextField fx:id="roomPass" alignment="CENTER" layoutX="10.0" layoutY="234.0" promptText="Room-Pass Id" style="-fx-prompt-text-fill: #8ff120;" unFocusColor="#b16a6a">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="100.0" right="100.0" top="50.0" />
+               </VBox.margin>
+            </JFXTextField>
+                <JFXButton fx:id="signUpBtn" onAction="#signUp" prefHeight="36.0" prefWidth="121.0" style="-fx-background-color: orange;" text="Sign Up" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold Italic" size="15.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </JFXButton>
+            <Label fx:id="errorMsg" textAlignment="CENTER" textFill="RED">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="50.0" left="336.0" right="400.0" />
+            </BorderPane.margin>
+            <padding>
+                <Insets top="120.0" />
+            </padding>
+        </VBox>
+   </center>
+   <left>
+      <JFXButton fx:id="backBtn" onAction="#goBack" style="-fx-background-color: orange;" text="Back" BorderPane.alignment="TOP_LEFT">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </JFXButton>
+   </left>
+</BorderPane>

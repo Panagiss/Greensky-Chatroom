@@ -23,8 +23,8 @@ public class Client {
 
         //int c= keyboard.read();
         toServer.println("1");
-        toServer.println("Panagis");
-        toServer.println("12345");
+        toServer.println(args[0]);
+        toServer.println(args[1]);
 
 
 

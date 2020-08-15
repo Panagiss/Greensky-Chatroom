@@ -7,7 +7,9 @@ import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -22,7 +24,10 @@ import static com.panagis.chatroom.client.main.MainClient.SERVER_IP;
 import static com.panagis.chatroom.client.main.MainClient.SERVER_PORT;
 
 public class RoomController {
+
     private PrintWriter toServer;
+    private Socket serverSocket;
+    JSONObject jsonToSend;
 
     @FXML
     public VBox messagesVbox;
@@ -32,43 +37,46 @@ public class RoomController {
     public JFXTextArea textToSend;
     @FXML
     public JFXButton btnSend;
+    @FXML
+    public JFXButton logoutBtn;
 
     public RoomController() {}
 
-    public void initialize(String name,PrintWriter toServer,BufferedReader fromServer) {
-        this.toServer =toServer;
+    public void initialize(String name,Socket serverSocket) throws IOException {
+        this.serverSocket=serverSocket;
+        this.toServer = new PrintWriter(serverSocket.getOutputStream(),true);
+        BufferedReader fromServer = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
 
-        //toServer.println(name); //send username to server
+        Stage window = (Stage) btnSend.getScene().getWindow();
+        window.setOnCloseRequest(e -> closeProgram());
+
         Service<Void> chatThread = new Service<>() {
             @Override
             protected Task<Void> createTask() {
                 return new Task<>() {
                     @Override
                     protected Void call() throws Exception {
-                        JSONObject json = new JSONObject();
+                        JSONObject json;
                         JSONParser jsonParser = new JSONParser();
                         ArrayList<String> list;
                         String res = new String();
-                        System.out.println("DEBUG LOL");
                         try {
                             while (true){
-                                System.out.println("DEBUG LOL 2");
                                 res = fromServer.readLine();
-                                System.out.println("DEBUG "+res);
-                                json= (JSONObject) jsonParser.parse(res);
-                                if(json.containsKey("exit")) break;
+                                //System.out.println("DEBUG "+res);
+                                json = (JSONObject) jsonParser.parse(res);
+                                if(json.containsKey("exit") || json.containsKey("logout")) break;
                                 if(json.containsKey("message")) {
-                                    System.out.println(json.get("name") + " said: " + json.get("message"));
+                                    System.out.println("\n"+json.get("name") + " said: " + json.get("message"));
                                     String finalRes = json.get("name") + " said: " + json.get("message"); //copying res to an effectively final res variable String
                                     Platform.runLater(() -> {
                                         JFXTextField msg = new JFXTextField(finalRes);
                                         msg.getStyleClass().add("clientMsg");
-                                        //messagesVbox.setAlignment(Pos.TOP_RIGHT);
                                         messagesVbox.getChildren().add(msg);
                                     });
                                 }else if(json.containsKey("addUser")){
                                     list= (ArrayList<String>) json.get("addUser");
-                                    System.out.println("New addition: "+list);
+                                    System.out.println("\nNew addition: "+list);
                                     ArrayList<String> finalList = list;
                                     Platform.runLater(() -> {
                                         usersVbox.getChildren().clear();
@@ -84,7 +92,7 @@ public class RoomController {
                                     });
                                 }else if(json.containsKey("removeUser")) {
                                     list= (ArrayList<String>) json.get("removeUser");
-                                    System.out.println(json.get("name")+" has left the chat");
+                                    System.out.println("\n"+json.get("name")+" has left the chat");
                                     System.out.println("New list: "+list);
                                     ArrayList<String> finalList = list;
                                     Platform.runLater(() -> {
@@ -120,8 +128,7 @@ public class RoomController {
 
 
         chatThread.setOnSucceeded(workerStateEvent -> {
-            System.out.println("Chat Thread Succeed");
-            System.out.println(chatThread.getValue());
+            System.out.println("Chat Thread Succeed "+chatThread.getValue());
         });
         chatThread.setOnFailed(workerStateEvent -> {
             System.out.println("Chat Thread Failed");
@@ -131,15 +138,38 @@ public class RoomController {
         chatThread.start();
     }
 
+
     public void send(){
-        //send message to server
-        System.out.println("DEBUG "+textToSend.getText());
-        toServer.println(textToSend.getText());
+        jsonToSend = new JSONObject();
+        jsonToSend.put("message",textToSend.getText());
+        toServer.println(jsonToSend.toJSONString());
 
         JFXTextField msg =new JFXTextField("Me: "+textToSend.getText());
         msg.getStyleClass().add("myMsg");
         //messagesVbox.setAlignment(Pos.TOP_RIGHT);
         messagesVbox.getChildren().add(msg);
         textToSend.setText(null);
+    }
+
+    public void logout() throws IOException {
+        jsonToSend = new JSONObject();
+        jsonToSend.put("logout",null);
+        toServer.println(jsonToSend.toJSONString());
+        System.out.println("\nLogging out client");
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/Login.fxml"));
+        Stage window = (Stage) logoutBtn.getScene().getWindow();
+        window.getScene().setRoot(loader.load());
+        window.show();
+
+        LoginController controller = loader.getController();
+        controller.initialize(serverSocket);
+    }
+
+    private void closeProgram() {
+        jsonToSend = new JSONObject();
+        jsonToSend.put("exit",null);
+        toServer.println(jsonToSend.toJSONString());
+        System.out.println("\nExiting...");
     }
 }

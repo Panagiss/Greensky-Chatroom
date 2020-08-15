@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="611.0" stylesheets="@../RoomCss.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.panagis.chatroom.client.controller.RoomController">
+<AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="611.0" stylesheets="@RoomCss.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.panagis.chatroom.client.controller.RoomController">
     <children>
         <AnchorPane fx:id="svgPane" layoutY="30.0" prefHeight="570.0" prefWidth="611.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
         <AnchorPane fx:id="titleBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="614.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

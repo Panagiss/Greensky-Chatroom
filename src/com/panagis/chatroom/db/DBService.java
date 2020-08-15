@@ -1,5 +1,7 @@
 package com.panagis.chatroom.db;
 
+import org.sqlite.SQLiteException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -75,7 +77,7 @@ public class DBService {
                 }
                 return false;
             }catch (SQLException e){
-                e.printStackTrace();
+                System.out.println(e.getMessage());
                 return false;
             }
 
@@ -109,7 +111,7 @@ public class DBService {
                 return true;
             }catch (SQLException ex){
                 System.out.println("Data Insertion to DB Failed");
-                ex.printStackTrace();
+                System.out.println(ex.getMessage());
                 return false;
             }
         }

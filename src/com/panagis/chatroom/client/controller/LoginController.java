@@ -4,10 +4,12 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
+import com.panagis.chatroom.client.main.MainClient;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
@@ -16,13 +18,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import static com.panagis.chatroom.client.main.MainClient.SERVER_IP;
-import static com.panagis.chatroom.client.main.MainClient.SERVER_PORT;
 
 public class LoginController {
-    private final Socket socket;
-    private final PrintWriter toServer;
-    private final BufferedReader fromServer;
+    private Socket serverSocket;
+    private PrintWriter toServer;
+    private BufferedReader fromServer;
 
     @FXML
     public JFXPasswordField password = new JFXPasswordField();
@@ -33,14 +33,27 @@ public class LoginController {
     @FXML
     public JFXButton signUpBtn = new JFXButton();
     @FXML
-    public JFXButton closeBtn = new JFXButton();
+    public Label errorMsg = new Label();
 
-    public LoginController() throws IOException {
-        socket = new Socket(SERVER_IP,SERVER_PORT);
-        toServer =new PrintWriter(socket.getOutputStream(),true);
-        fromServer =new BufferedReader(new InputStreamReader(socket.getInputStream()));
-    }
-    public void initialize(){
+    public LoginController(){}
+
+    public void initialize(Socket serverSocket) throws IOException {
+
+        this.serverSocket = serverSocket;
+
+        if(this.serverSocket==null){System.out.println("NULL ERROR1"); return;}
+
+        //check if socket is closed
+        if(serverSocket.isClosed()){
+            System.out.println("Socket was closed\n");
+            serverSocket = new Socket(MainClient.SERVER_IP,MainClient.SERVER_PORT);
+            this.serverSocket = serverSocket;
+        }
+
+        System.out.println("DEBUG Login controller initialized");
+        this.toServer =new PrintWriter(serverSocket.getOutputStream(),true);
+        this.fromServer =new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+
         RequiredFieldValidator validator =new RequiredFieldValidator();
         validator.setMessage("Input Required");
         password.getValidators().add(validator);
@@ -57,8 +70,9 @@ public class LoginController {
             }
         } );
         loginBtn.disableProperty().bind(Bindings.isEmpty(password.textProperty()).or(Bindings.isEmpty(username.textProperty()) ) );
-
     }
+
+
 
     public void login() throws IOException{
         //send user info to server for validation
@@ -68,41 +82,32 @@ public class LoginController {
         System.out.println("DEBUG info sent");
         if(fromServer.readLine().equals("0")){
             //wrong username or password
-            System.out.println("Wrong info, exiting...");
-            return;
+            System.out.println("Wrong info, try again");
+            username.setText(null);
+            password.setText(null);
+            errorMsg.setText("Wrong login info, please try again");
         }else {
             System.out.println("Login Successful");
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/MyRoom.fxml"));
+            Stage window = (Stage) loginBtn.getScene().getWindow();
+            window.getScene().setRoot(loader.load());
+            window.show();
+
+            RoomController controller = loader.getController();
+            controller.initialize(username.getText(),serverSocket);
         }
-
-        System.out.println("DEBUG 2");
-        FXMLLoader loader =new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/MyRoom.fxml"));
-        Stage window = (Stage) loginBtn.getScene().getWindow();
-        window.getScene().setRoot(loader.load());
-        window.show();
-
-        RoomController controller = loader.getController();
-        controller.initialize(username.getText(),toServer,fromServer);
     }
 
     public void signUp(ActionEvent actionEvent) throws IOException {
-        //send user info to server for signing up
-        toServer.println("0"); // 0 is for sign up
-        toServer.println(username.getText());
-        toServer.println(password.getText());
-        if(fromServer.readLine().equals("0")){
-            //error or username exists
-            System.out.println("Username already exists or an error occurred, exiting...");
-            return;
-        }else {
-            System.out.println("Sign up Successful");
-        }
 
-        FXMLLoader loader =new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/MyRoom.fxml"));
+        FXMLLoader loader =new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/SignUp.fxml"));
         Stage window = (Stage) loginBtn.getScene().getWindow();
         window.getScene().setRoot(loader.load());
         window.show();
 
-        RoomController controller = loader.getController();
-        controller.initialize(username.getText(),toServer,fromServer);
+        SignUpController controller = loader.getController();
+        if(serverSocket==null){System.out.println("NULL ERROR");}
+        controller.initialize(serverSocket);
     }
 }

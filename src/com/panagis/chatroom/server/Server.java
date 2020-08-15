@@ -34,21 +34,19 @@ public class Server {
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println("DB connection failed, exiting.....");
             e.printStackTrace();
-            throw e;
+            return;
         }
         System.out.println("Server up and running\n\n");
 
 
         while(true){
             Socket clientSoc = listener.accept();
-            System.out.println("\nA client tries to connect -- "+formatter.format(new Date())+"\n");
+            System.out.println("\n\nA client tries to connect -- "+formatter.format(new Date())+"\n");
 
             ClientHandler clientThread = new ClientHandler(clientSoc, clientList);
             clientList.add(clientThread);
 
             pool.execute(clientThread);
-            System.out.println("Thread started");
-
         }
 
     }

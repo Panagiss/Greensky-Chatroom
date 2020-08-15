@@ -13,7 +13,7 @@
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #35574d;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.panagis.chatroom.client.controller.LoginController">
    <right>
-      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0">
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="15.0">
          <children>
             <JFXTextField fx:id="username" alignment="CENTER" prefHeight="44.0" prefWidth="240.0" promptText="Username" style="-fx-prompt-text-fill: #8ff120;" unFocusColor="#b16a6a">
                <font>
@@ -39,30 +39,17 @@
                   <Insets bottom="15.0" />
                </VBox.margin>
             </JFXButton>
-            <JFXButton fx:id="signUpBtn" onAction="#signUp" prefHeight="29.0" prefWidth="69.0" style="-fx-background-color: orange;" text="Sign Up" textAlignment="CENTER">
+            <Label fx:id="errorMsg" textAlignment="CENTER" textFill="RED">
                <font>
-                  <Font name="System Bold Italic" size="10.0" />
+                  <Font size="18.0" />
                </font>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </JFXButton>
+            </Label>
          </children>
          <BorderPane.margin>
-            <Insets bottom="25.0" left="25.0" right="200.0" top="100.0" />
+            <Insets bottom="50.0" left="25.0" right="200.0" top="100.0" />
          </BorderPane.margin>
       </VBox>
    </right>
-   <left>
-      <Text fill="#8ff120" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Chat Room" textAlignment="CENTER" wrappingWidth="249.65771484375" BorderPane.alignment="CENTER_RIGHT">
-         <font>
-            <Font name="P052-Bold" size="33.0" />
-         </font>
-         <BorderPane.margin>
-            <Insets left="200.0" right="10.0" />
-         </BorderPane.margin>
-      </Text>
-   </left>
    <center>
       <Line endX="-100.00051879882812" endY="-285.5572814941406" startX="-99.99992370605469" startY="25.735626220703125" stroke="#ab8c8c" BorderPane.alignment="CENTER" />
    </center>
@@ -73,4 +60,34 @@
          </font>
       </Label>
    </top>
+   <left>
+      <VBox alignment="TOP_CENTER" spacing="15.0">
+         <children>
+            <Text fill="#8ff120" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Chat Room" textAlignment="CENTER" wrappingWidth="249.65771484375">
+               <font>
+                  <Font name="P052-Bold" size="33.0" />
+               </font>
+            </Text>
+            <JFXButton fx:id="signUpBtn" onAction="#signUp" prefHeight="36.0" prefWidth="121.0" style="-fx-background-color: orange;" text="Sign Up" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold Italic" size="15.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </JFXButton>
+            <Label textAlignment="CENTER" textFill="RED">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="50.0" left="200.0" right="25.0" top="100.0" />
+         </BorderPane.margin>
+         <padding>
+            <Insets top="120.0" />
+         </padding>
+      </VBox>
+   </left>
 </BorderPane>
