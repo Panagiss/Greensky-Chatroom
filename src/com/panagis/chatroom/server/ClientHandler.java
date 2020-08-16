@@ -112,10 +112,11 @@ public class ClientHandler implements Runnable{
                     });
                     break;
                 }else if(json.containsKey("message")){
+                    String msg= (String) json.get("message");
                     json.clear();
-                    System.out.println("Client (" +username+ ") said: "+res+" -- "+formatter.format(new Date()));
+                    System.out.println("Client (" +username+ ") said: "+msg+" -- "+formatter.format(new Date()));
                     json.put("name",username);
-                    json.put("message",res);
+                    json.put("message",msg);
                     //System.out.println("DEBUG "+jsonToSend);
                     JSONObject finalJson2 = json;
                     clientList.forEach(clientHandler -> {
