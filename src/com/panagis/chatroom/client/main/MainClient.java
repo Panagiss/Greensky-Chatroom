@@ -15,12 +15,14 @@ import java.net.Socket;
 
 public class MainClient extends Application {
 
-    public static final String SERVER_IP="127.0.0.1";
-    public static final int SERVER_PORT=1313;
+    public static final String SERVER_IP="greenskyroom.duckdns.org";
+    public static final int SERVER_PORT=8080;
     public Socket serverSocket =null;
 
     /**
      * This is the main method. Everything starts from here.
+     *
+     *
      *
      * @param args Not a really necessary parameter
      */
@@ -72,7 +74,7 @@ public class MainClient extends Application {
             }
         });
 
-        DBRequestThread.setOnFailed(workerStateEvent -> {System.out.println("Pre-GUI DB Thread failed");
+        DBRequestThread.setOnFailed(workerStateEvent -> {System.out.println("Pre-GUI DB Thread failed "+DBRequestThread.getException().toString());
             Platform.exit();
         });
 

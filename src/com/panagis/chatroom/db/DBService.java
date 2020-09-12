@@ -107,10 +107,10 @@ public class DBService {
                 String insertSQL="INSERT INTO users VALUES("+ "'" +username+ "'" + "," + "'" + password+ "'"+ ");" ;
                 db_prep=db_con.prepareStatement(insertSQL);
                 db_prep.executeUpdate();
-                System.out.println("City Insertion to DB Successful");
+                System.out.println("User Insertion to DB Successful");
                 return true;
             }catch (SQLException ex){
-                System.out.println("Data Insertion to DB Failed");
+                System.out.println("User Insertion to DB Failed");
                 System.out.println(ex.getMessage());
                 return false;
             }

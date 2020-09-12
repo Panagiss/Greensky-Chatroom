@@ -79,14 +79,16 @@ public class LoginController {
         toServer.println("1");// 1 is for login
         toServer.println(username.getText());
         toServer.println(password.getText());
-        System.out.println("DEBUG info sent");
-        if(fromServer.readLine().equals("0")){
+        System.out.println("DEBUG info sent, waiting for confirmation...");
+        String res=fromServer.readLine();
+        System.out.println("DEBUG2 "+res);
+        if(res.equals("0")){
             //wrong username or password
             System.out.println("Wrong info, try again");
             username.setText(null);
             password.setText(null);
             errorMsg.setText("Wrong login info, please try again");
-        }else {
+        }else if(res.equals("1")) {
             System.out.println("Login Successful");
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/MyRoom.fxml"));
@@ -96,6 +98,8 @@ public class LoginController {
 
             RoomController controller = loader.getController();
             controller.initialize(username.getText(),serverSocket);
+        }else {
+            System.out.println("WHAT???");
         }
     }
 

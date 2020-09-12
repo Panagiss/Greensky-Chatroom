@@ -19,13 +19,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-    private static final int PORT =1313;
+    private static final int PORT =8080;
     private static final ArrayList<ClientHandler> clientList =new ArrayList<>();
     private static final ExecutorService pool = Executors.newFixedThreadPool(4);
     public static LinkedList<String> list = new LinkedList<>();
 
     public static void main(String [] args) throws IOException, SQLException, ClassNotFoundException, InterruptedException {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss:SSS");
         ServerSocket listener = new ServerSocket(PORT);
 
         //make DB connection

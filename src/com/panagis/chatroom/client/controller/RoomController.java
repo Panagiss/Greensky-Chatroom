@@ -18,10 +18,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
-import static com.panagis.chatroom.client.main.MainClient.SERVER_IP;
-import static com.panagis.chatroom.client.main.MainClient.SERVER_PORT;
 
 public class RoomController {
 
@@ -46,6 +46,8 @@ public class RoomController {
         this.serverSocket=serverSocket;
         this.toServer = new PrintWriter(serverSocket.getOutputStream(),true);
         BufferedReader fromServer = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss:SSS");
+
 
         Stage window = (Stage) btnSend.getScene().getWindow();
         window.setOnCloseRequest(e -> closeProgram());
@@ -59,11 +61,11 @@ public class RoomController {
                         JSONObject json;
                         JSONParser jsonParser = new JSONParser();
                         ArrayList<String> list;
-                        String res = new String();
+                        String res ;
                         try {
                             while (true){
                                 res = fromServer.readLine();
-                                //System.out.println("DEBUG "+res);
+                                //System.out.println("\nDEBUG "+res);
                                 json = (JSONObject) jsonParser.parse(res);
                                 if(json.containsKey("exit") || json.containsKey("logout")) break;
                                 if(json.containsKey("message")) {
@@ -131,7 +133,7 @@ public class RoomController {
             System.out.println("Chat Thread Succeed "+chatThread.getValue());
         });
         chatThread.setOnFailed(workerStateEvent -> {
-            System.out.println("Chat Thread Failed");
+            System.out.println("Chat Thread Failed "+formatter.format(new Date()));
             chatThread.getException().printStackTrace(System.out);
         });
 
