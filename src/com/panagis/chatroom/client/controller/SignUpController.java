@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +17,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class SignUpController {
 
@@ -31,6 +34,7 @@ public class SignUpController {
     public Label errorMsg;
     @FXML
     public JFXButton backBtn;
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss:SSS");
 
     boolean b=true;
 
@@ -72,38 +76,117 @@ public class SignUpController {
 
 
     public void signUp(ActionEvent actionEvent) throws IOException {
-        //send user info to server for signing up
-        toServer.println("0"); // 0 is for sign up
-        toServer.println(username.getText());
-        toServer.println(password.getText());
-        toServer.println("theboys");
-        if(fromServer.readLine().equals("0")){
-            //error or username exists
-            System.out.println("Username already exists or an error occurred, try again");
-            if(!b){
-                username.setText(null);
-                password.setText(null);
-                roomPass.setText(null);
-                errorMsg.setText("Invalid info, remember username must be unique");
-                b=true;
-            }else {
-                username.setText(null);
-                password.setText(null);
-                roomPass.setText(null);
-                errorMsg.setText("Invalid info, check Room Pass ID and please try again");
-                b=false;
-            }
+        String usrn=username.getText().toLowerCase().trim();
+        String pswd=password.getText().toLowerCase().trim();
+        usrn=usrn.replaceAll("\\s+","");
+        pswd=pswd.replaceAll("\\s+","");
+
+        if(usrn.length()>10||usrn.length()<3){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Platform.runLater(()->{
+                        username.setText(null);
+                        password.setText(null);
+                        roomPass.setText(null);
+                        errorMsg.setText("Username must be between 10 & 3 letters or digits");
+                    });
+                    try {
+                        Thread.sleep(4000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Platform.runLater(()->{
+                        errorMsg.setText(null);
+                    });
+                }
+            }).start();
+        }else if(pswd.length()>12||pswd.length()<3){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Platform.runLater(()->{
+                        username.setText(null);
+                        password.setText(null);
+                        roomPass.setText(null);
+                        errorMsg.setText("Password must be between 12 and 3 letters");
+                    });
+                    try {
+                        Thread.sleep(4000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Platform.runLater(()->{
+                        errorMsg.setText(null);
+                    });
+                }
+            }).start();
         }else {
-            System.out.println("Sign up Successful");
+            //send user info to server for signing up
+            toServer.println("0"); // 0 is for sign up
+            toServer.println("theboys");
+            toServer.println(usrn);
+            toServer.println(pswd);
+            if (fromServer.readLine().equals("0")) {
+                //error or username exists
+                System.out.println("Username already exists or an error occurred, try again "+formatter.format(new Date()));
+                if (!b) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Platform.runLater(()->{
+                                username.setText(null);
+                                password.setText(null);
+                                roomPass.setText(null);
+                                errorMsg.setText("Invalid info, Username must be unique");
+                            });
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            Platform.runLater(()->{
+                                errorMsg.setText(null);
+                            });
+                        }
+                    }).start();
+                    b = true;
+                } else {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Platform.runLater(()->{
+                                username.setText(null);
+                                password.setText(null);
+                                roomPass.setText(null);
+                                errorMsg.setText("Invalid info, check Room Pass ID and please try again");
+                            });
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            Platform.runLater(()->{
+                                errorMsg.setText(null);
+                            });
+                        }
+                    }).start();
+                    b = false;
+                }
+            } else {
+                System.out.println("Sign up Successful "+formatter.format(new Date()));
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/MyRoom.fxml"));
-            Stage window = (Stage) signUpBtn.getScene().getWindow();
-            window.getScene().setRoot(loader.load());
-            window.show();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/MyRoom.fxml"));
+                Stage window = (Stage) signUpBtn.getScene().getWindow();
+                window.getScene().setRoot(loader.load());
+                window.show();
 
-            RoomController controller = loader.getController();
-            if(serverSocket==null){System.out.println("NULL ERROR sign up");}
-            controller.initialize(username.getText(), serverSocket);
+                RoomController controller = loader.getController();
+                if (serverSocket == null) {
+                    System.out.println("NULL ERROR sign up "+formatter.format(new Date()));
+                }
+                controller.initialize(username.getText(), serverSocket);
+            }
         }
     }
 

@@ -5,7 +5,11 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
 import com.panagis.chatroom.client.main.MainClient;
+import com.sun.source.util.TaskEvent;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class LoginController {
@@ -34,6 +40,7 @@ public class LoginController {
     public JFXButton signUpBtn = new JFXButton();
     @FXML
     public Label errorMsg = new Label();
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss:SSS");
 
     public LoginController(){}
 
@@ -45,12 +52,12 @@ public class LoginController {
 
         //check if socket is closed
         if(serverSocket.isClosed()){
-            System.out.println("Socket was closed\n");
+            System.out.println("Socket was closed "+formatter.format(new Date())+"\n");
             serverSocket = new Socket(MainClient.SERVER_IP,MainClient.SERVER_PORT);
             this.serverSocket = serverSocket;
         }
 
-        System.out.println("DEBUG Login controller initialized");
+        System.out.println("\nDEBUG Login controller initialized "+formatter.format(new Date()));
         this.toServer =new PrintWriter(serverSocket.getOutputStream(),true);
         this.fromServer =new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
 
@@ -75,31 +82,104 @@ public class LoginController {
 
 
     public void login() throws IOException{
-        //send user info to server for validation
-        toServer.println("1");// 1 is for login
-        toServer.println(username.getText());
-        toServer.println(password.getText());
-        System.out.println("DEBUG info sent, waiting for confirmation...");
-        String res=fromServer.readLine();
-        System.out.println("DEBUG2 "+res);
-        if(res.equals("0")){
-            //wrong username or password
-            System.out.println("Wrong info, try again");
-            username.setText(null);
-            password.setText(null);
-            errorMsg.setText("Wrong login info, please try again");
-        }else if(res.equals("1")) {
-            System.out.println("Login Successful");
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/MyRoom.fxml"));
-            Stage window = (Stage) loginBtn.getScene().getWindow();
-            window.getScene().setRoot(loader.load());
-            window.show();
-
-            RoomController controller = loader.getController();
-            controller.initialize(username.getText(),serverSocket);
+        String usrn=username.getText().toLowerCase().trim();
+        String pswd=password.getText().toLowerCase().trim();
+        usrn=usrn.replaceAll("\\s+","");
+        pswd=pswd.replaceAll("\\s+","");
+        if(usrn.length()>10||usrn.length()<3){
+            Service<Void> aThread = new Service<Void>() {
+                @Override
+                protected Task<Void> createTask() {
+                    return new Task<Void>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            Platform.runLater(()->{
+                                username.setText(null);
+                                password.setText(null);
+                                errorMsg.setText("This cannot be your username..");
+                            });
+                            try {
+                                Thread.sleep(4000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            Platform.runLater(()->{
+                                errorMsg.setText(null);
+                            });
+                            return null;
+                        }
+                    };
+                }
+            };
+            aThread.start();
+        }else if(pswd.length()>12||pswd.length()<3){
+            Service<Void> bThread = new Service<Void>() {
+                @Override
+                protected Task<Void> createTask() {
+                    return new Task<Void>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            Platform.runLater(()->{
+                                username.setText(null);
+                                password.setText(null);
+                                errorMsg.setText("Password doesn't meet criteria");
+                            });
+                            try {
+                                Thread.sleep(4000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            Platform.runLater(()->{
+                                errorMsg.setText(null);
+                            });
+                            return null;
+                        }
+                    };
+                }
+            };
+            bThread.start();
         }else {
-            System.out.println("WHAT???");
+            //send user info to server for validation
+            toServer.println("1");// 1 is for login
+            toServer.println(usrn);
+            toServer.println(pswd);
+            System.out.println("\nDEBUG info sent, waiting for confirmation... "+formatter.format(new Date()));
+            String res = fromServer.readLine();
+            System.out.println("DEBUG2 " + res);
+            if (res.equals("0")) {
+                //wrong username or password
+                System.out.println("Wrong info, try again");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Platform.runLater(()->{
+                            username.setText(null);
+                            password.setText(null);
+                            errorMsg.setText("Wrong login info, please try again");
+                        });
+                        try {
+                            Thread.sleep(4000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        Platform.runLater(()->{
+                            errorMsg.setText(null);
+                        });
+                    }
+                }).start();
+            } else if (res.equals("1")) {
+                System.out.println("Login Successful "+formatter.format(new Date()));
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/MyRoom.fxml"));
+                Stage window = (Stage) loginBtn.getScene().getWindow();
+                window.getScene().setRoot(loader.load());
+                window.show();
+
+                RoomController controller = loader.getController();
+                controller.initialize(username.getText(), serverSocket);
+            } else {
+                System.out.println("WHAT??? "+formatter.format(new Date()));
+            }
         }
     }
 
@@ -111,7 +191,7 @@ public class LoginController {
         window.show();
 
         SignUpController controller = loader.getController();
-        if(serverSocket==null){System.out.println("NULL ERROR");}
+        if(serverSocket==null){System.out.println("NULL ERROR "+formatter.format(new Date()));}
         controller.initialize(serverSocket);
     }
 }

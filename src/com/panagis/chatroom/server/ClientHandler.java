@@ -36,7 +36,7 @@ public class ClientHandler implements Runnable{
 
         //client validation
         String choice;
-        String username = null;
+        String username;
         String password;
         while(true) {
             try {
@@ -84,7 +84,7 @@ public class ClientHandler implements Runnable{
                     }
                 }
                 else {
-                    System.out.println("Option ="+ choice + " Error "+formatter.format(new Date()));
+                    System.out.println("Option = "+ choice + " Error "+formatter.format(new Date()));
                     toClient.close();
                     System.out.println("toClient Closed "+formatter.format(new Date()) );
                     try {
