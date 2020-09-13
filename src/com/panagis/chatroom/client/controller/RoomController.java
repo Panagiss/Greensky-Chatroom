@@ -40,6 +40,8 @@ public class RoomController {
     @FXML
     public JFXButton logoutBtn;
 
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss:SSS");
+
     public RoomController() {}
 
     public void initialize(String name,Socket serverSocket) throws IOException {
@@ -130,7 +132,7 @@ public class RoomController {
 
 
         chatThread.setOnSucceeded(workerStateEvent -> {
-            System.out.println("Chat Thread Succeed "+chatThread.getValue());
+            System.out.println("Chat Thread Succeed "+chatThread.getValue()+" "+formatter.format(new Date()));
         });
         chatThread.setOnFailed(workerStateEvent -> {
             System.out.println("Chat Thread Failed "+formatter.format(new Date()));
@@ -153,11 +155,12 @@ public class RoomController {
         textToSend.setText(null);
     }
 
-    public void logout() throws IOException {
+    public void logout() throws IOException, InterruptedException {
         jsonToSend = new JSONObject();
         jsonToSend.put("logout",null);
         toServer.println(jsonToSend.toJSONString());
-        System.out.println("\nLogging out client");
+        System.out.println("\nLogging out client "+formatter.format(new Date()));
+        Thread.sleep(100);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/Login.fxml"));
         Stage window = (Stage) logoutBtn.getScene().getWindow();
@@ -172,6 +175,6 @@ public class RoomController {
         jsonToSend = new JSONObject();
         jsonToSend.put("exit",null);
         toServer.println(jsonToSend.toJSONString());
-        System.out.println("\nExiting...");
+        System.out.println("\nExiting... "+formatter.format(new Date()));
     }
 }
