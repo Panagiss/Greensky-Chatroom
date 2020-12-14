@@ -26,4 +26,13 @@ In order to run Client you must specify also these VM options
 In order to sign up for the first time client must provide a **Room Key**. Default key is "theboys". This can be changed
 in ```ClientHandler``` class.
 
+## Screenshots
 
+### Server
+![alt text](https://github.com/Panagiss/JavaFX-Server-Client-ChatRoom/blob/master/sample-images/Screenshot%20from%202020-12-14%2015-02-37.png)
+![alt text](https://github.com/Panagiss/JavaFX-Server-Client-ChatRoom/blob/master/sample-images/Screenshot%20from%202020-12-14%2015-05-23.png)
+
+### Client
+![alt text](https://github.com/Panagiss/JavaFX-Server-Client-ChatRoom/blob/master/sample-images/Screenshot%20from%202020-12-14%2015-00-28.png)
+![alt text](https://github.com/Panagiss/JavaFX-Server-Client-ChatRoom/blob/master/sample-images/Screenshot%20from%202020-12-14%2015-04-42.png)
+![alt text](https://github.com/Panagiss/JavaFX-Server-Client-ChatRoom/blob/master/sample-images/Screenshot%20from%202020-12-14%2015-04-59.png)
