@@ -1,6 +1,6 @@
 package com.greensky.chatroom.client.controller;
 
-import com.greensky.chatroom.client.mainGUI.MainClient;
+import com.greensky.chatroom.client.main.MainClient;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
