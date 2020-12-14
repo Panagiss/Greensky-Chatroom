@@ -1,6 +1,6 @@
-package com.panagis.chatroom.server;
+package com.greensky.chatroom.server;
 
-import com.panagis.chatroom.db.DBService;
+import com.greensky.chatroom.db.DBService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -194,7 +194,8 @@ public class ClientHandler implements Runnable{
             if(clientHandler.getClientSocket()!=this.clientSocket && clientHandler.getUsername()!=null){
                 clientHandler.getToClient().println(msg);
             }
-        });    }
+        });
+    }
 
 
     public Socket getClientSocket() {

@@ -60,3 +60,8 @@ crashlytics.properties
 crashlytics-build.properties
 
 # Created by .ignore support plugin (hsz.mobi)
+/src/com/greensky/chatroom/client/mainNonGUI/
+
+src/com/panagis/chatroom/client/main/Client.java
+
+src/com/panagis/chatroom/client/main/MessageReceiver.java

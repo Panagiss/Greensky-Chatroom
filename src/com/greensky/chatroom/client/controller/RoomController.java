@@ -1,4 +1,4 @@
-package com.panagis.chatroom.client.controller;
+package com.greensky.chatroom.client.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
@@ -162,7 +162,7 @@ public class RoomController {
         System.out.println("\nLogging out client "+formatter.format(new Date()));
         Thread.sleep(100);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/Login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/greensky/chatroom/client/fxml/Login.fxml"));
         Stage window = (Stage) logoutBtn.getScene().getWindow();
         window.getScene().setRoot(loader.load());
         window.show();

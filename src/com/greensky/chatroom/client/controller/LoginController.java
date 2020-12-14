@@ -1,11 +1,10 @@
-package com.panagis.chatroom.client.controller;
+package com.greensky.chatroom.client.controller;
 
+import com.greensky.chatroom.client.mainGUI.MainClient;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
-import com.panagis.chatroom.client.main.MainClient;
-import com.sun.source.util.TaskEvent;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Service;
@@ -170,7 +169,7 @@ public class LoginController {
             } else if (res.equals("1")) {
                 System.out.println("Login Successful "+formatter.format(new Date()));
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/MyRoom.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/greensky/chatroom/client/fxml/MyRoom.fxml"));
                 Stage window = (Stage) loginBtn.getScene().getWindow();
                 window.getScene().setRoot(loader.load());
                 window.show();
@@ -185,7 +184,7 @@ public class LoginController {
 
     public void signUp(ActionEvent actionEvent) throws IOException {
 
-        FXMLLoader loader =new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/SignUp.fxml"));
+        FXMLLoader loader =new FXMLLoader(getClass().getResource("/com/greensky/chatroom/client/fxml/SignUp.fxml"));
         Stage window = (Stage) loginBtn.getScene().getWindow();
         window.getScene().setRoot(loader.load());
         window.show();

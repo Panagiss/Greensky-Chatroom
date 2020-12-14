@@ -1,6 +1,4 @@
-package com.panagis.chatroom.db;
-
-import org.sqlite.SQLiteException;
+package com.greensky.chatroom.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

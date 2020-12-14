@@ -1,4 +1,4 @@
-package com.panagis.chatroom.client.controller;
+package com.greensky.chatroom.client.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
@@ -176,7 +176,7 @@ public class SignUpController {
             } else {
                 System.out.println("Sign up Successful "+formatter.format(new Date()));
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/MyRoom.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/greensky/chatroom/client/fxml/MyRoom.fxml"));
                 Stage window = (Stage) signUpBtn.getScene().getWindow();
                 window.getScene().setRoot(loader.load());
                 window.show();
@@ -191,7 +191,7 @@ public class SignUpController {
     }
 
     public void goBack(ActionEvent actionEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/Login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/greensky/chatroom/client/fxml/Login.fxml"));
         Stage window = (Stage) backBtn.getScene().getWindow();
         window.getScene().setRoot(loader.load());
         window.show();

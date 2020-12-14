@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #35574d;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.panagis.chatroom.client.controller.SignUpController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #35574d;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.greensky.chatroom.client.controller.SignUpController">
     <top>
         <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #2A363F;" text="GREEN SKY" textAlignment="CENTER" textFill="#1ca12b" BorderPane.alignment="CENTER">
             <font>
@@ -45,7 +45,7 @@
                   <Insets left="100.0" right="100.0" />
                </VBox.margin>
             </JFXPasswordField>
-            <JFXTextField fx:id="roomPass" alignment="CENTER" layoutX="10.0" layoutY="234.0" promptText="Room-Pass Id" style="-fx-prompt-text-fill: #8ff120;" unFocusColor="#b16a6a">
+            <JFXTextField fx:id="roomPass" alignment="CENTER" layoutX="10.0" layoutY="234.0" promptText="Room Key" style="-fx-prompt-text-fill: #8ff120;" unFocusColor="#b16a6a">
                <font>
                   <Font size="20.0" />
                </font>

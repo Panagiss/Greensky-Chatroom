@@ -1,6 +1,6 @@
-package com.panagis.chatroom.client.main;
+package com.greensky.chatroom.client.mainGUI;
 
-import com.panagis.chatroom.client.controller.LoginController;
+import com.greensky.chatroom.client.controller.LoginController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
@@ -15,7 +15,7 @@ import java.net.Socket;
 
 public class MainClient extends Application {
 
-    public static final String SERVER_IP="greenskyroom.duckdns.org";
+    public static final String SERVER_IP="127.0.0.1";
     public static final int SERVER_PORT=8080;
     public Socket serverSocket =null;
 
@@ -48,7 +48,7 @@ public class MainClient extends Application {
 
             FXMLLoader loader;
             try {
-                loader =new FXMLLoader(getClass().getResource("/com/panagis/chatroom/client/fxml/Login.fxml"));
+                loader =new FXMLLoader(getClass().getResource("/com/greensky/chatroom/client/fxml/Login.fxml"));
             }catch (Exception e){
                 System.out.println("MainClass error: "+e);
                 System.out.println("LOL");

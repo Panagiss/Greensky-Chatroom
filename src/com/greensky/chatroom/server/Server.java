@@ -1,15 +1,10 @@
-package com.panagis.chatroom.server;
+package com.greensky.chatroom.server;
 
-import com.panagis.chatroom.db.DBService;
-import org.json.simple.JSONObject;
+import com.greensky.chatroom.db.DBService;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.IllegalCharsetNameException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
