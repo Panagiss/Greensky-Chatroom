@@ -1,4 +1,4 @@
-package com.greensky.chatroom.client.mainGUI;
+package com.greensky.chatroom.client.main;
 
 import com.greensky.chatroom.client.controller.LoginController;
 import javafx.application.Application;
